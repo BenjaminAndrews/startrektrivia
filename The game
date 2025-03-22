@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Star Trek Trivia</title>
+<style>
+body {
+  font-family: sans-serif;
+  background-color: black;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+#game-container {
+  background-color: rgba(54, 69, 79, 1);
+  padding: 20px;
+  border: 2px solid red;
+  border-radius: 10px;
+  text-align: center;
+  width: 80%;
+  max-width: 600px;
+}
+
+#question {
+  font-size: 20px;
+  margin-bottom: 20px;
+  Color: gold;
+}
+
+.answer-button {
+  background-color: yellow;
+  color: black;
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.answer-button:hover {
+  background-color: lightyellow;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+#score {
+  margin-top: 10px;
+  Color: red;
+}
+
+#restart-button {
+  background-color: gold;
+  color: black;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#restart-button:hover {
+  background-color: lightgoldenrodyellow;
+}
+</style>
+</head>
+<body>
+
+<div id="game-container">
+  <h1 style="color: red;">Star Trek Trivia</h1>
+  <div id="question"></div>
+  <div id="answers"></div>
+  <div id="result"></div>
+  <div id="score">Score: 0</div>
+  <button id="restart-button" style="display: none;">Restart Game</button>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "What is the name of Captain Kirk's ship?",
+    answers: ["Enterprise", "Defiant", "Voyager", "Reliant"],
+    correctAnswer: "Enterprise"
+  },
+  {
+    question: "Who is the Vulcan science officer?",
+    answers: ["Dr. McCoy", "Spock", "Scotty", "Chekov"],
+    correctAnswer: "Spock"
+  },
+    {
+    question: "What is Dr. McCoy's nickname?",
+    answers: ["Bones", "Doc", "Mac", "Leonard"],
+    correctAnswer: "Bones"
+  },
+    {
+    question: "What is Scotty's full name?",
+    answers: ["Montgomery Scott", "James Scott", "William Scott", "John Scott"],
+    correctAnswer: "Montgomery Scott"
+  },
+    {
+    question: "In Star Trek II: The Wrath of Khan, who is the main antagonist?",
+    answers: ["Klingons", "Romulans", "Khan Noonien Singh", "The Borg"],
+    correctAnswer: "Khan Noonien Singh"
+  },
+    {
+    question: "What is the name of the Klingon homeworld?",
+    answers: ["Vulcan", "Romulus", "Kronos", "Andoria"],
+    correctAnswer: "Kronos"
+  },
+    {
+    question: "What is the name of the device used for teleportation?",
+    answers: ["Warp Drive", "Transporter", "Phaser", "Communicator"],
+    correctAnswer: "Transporter"
+  },
+    {
+    question: "What year did the original Star Trek series premiere?",
+    answers: ["1966", "1970", "1975", "1980"],
+    correctAnswer: "1966"
+  },
+    {
+    question: "Which movie featured the whale probe?",
+    answers: ["Star Trek: The Motion Picture", "Star Trek II: The Wrath of Khan", "Star Trek III: The Search for Spock", "Star Trek IV: The Voyage Home"],
+    correctAnswer: "Star Trek IV: The Voyage Home"
+  },
+    {
+    question: "What is the primary function of the Enterprise?",
+    answers: ["Exploration", "Warfare", "Trade", "Diplomacy"],
+    correctAnswer: "Exploration"
+  },
+    {
+    question: "What is the name of the Romulan Commander in 'The Enterprise Incident'?",
+    answers: ["Tomed", "Charvanek", "Talok", "Valdore"],
+    correctAnswer: "Tomed"
+  },
+    {
+    question: "What is the name of the powerful entity encountered in 'Where No Man Has Gone Before'?",
+    answers: ["The Borg", "Gary Mitchell", "The Prophets", "The Q Continuum"],
+    correctAnswer: "Gary Mitchell"
+  },
+    {
+    question: "What is the name of the Organian Peace Treaty?",
+    answers: ["The Khitomer Accords", "The Organian Peace Treaty", "The Federation-Klingon Alliance", "The Treaty of Algeron"],
+    correctAnswer: "The Organian Peace Treaty"
+  },
+    {
+    question: "What is the name of the space station that the Enterprise visits in 'The Trouble with Tribbles'?",
+    answers: ["Deep Space Nine", "Starbase 11", "K-7", "Regula 1"],
+    correctAnswer: "K-7"
+  },
+    {
+    question: "Who played Captain Christopher Pike in the original pilot episode 'The Cage'?",
+    answers: ["William Shatner", "Patrick Stewart", "Jeffrey Hunter", "Avery Brooks"],
+    correctAnswer: "Jeffrey Hunter"
+  },
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const resultElement = document.getElementById("result");
+const scoreElement = document.getElementById("score");
+const restartButton = document.getElementById("restart-button");
+
+function loadQuestion() {
+  const q = questions[currentQuestion];
+  questionElement.textContent = q.question;
+  answersElement.innerHTML = "";
+
+  q.answers.forEach(answer => {
+    const button = document.createElement("button");
+    button.textContent = answer;
+    button.classList.add("answer-button");
+    button.addEventListener("click", () => checkAnswer(answer, q.correctAnswer));
+    answersElement.appendChild(button);
+  });
+}
+
+function checkAnswer(selectedAnswer, correctAnswer) {
+  if (selectedAnswer === correctAnswer) {
+    resultElement.textContent = "Correct!";
+    score++;
+  } else {
+    resultElement.textContent = "Incorrect!";
+  }
+
+  scoreElement.textContent = `Score: ${score}`;
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+    setTimeout(loadQuestion, 1500);
+  } else {
+    questionElement.textContent = "Game Over!";
+    answersElement.innerHTML = "";
+    resultElement.textContent = `Final Score: ${score} out of ${questions.length}`;
+    restartButton.style.display = "block";
+  }
+}
+
+function restartGame() {
+    currentQuestion = 0;
+    score = 0;
+    scoreElement.textContent = `Score: ${score}`;
+    resultElement.textContent = "";
+    restartButton.style.display = "none";
+    loadQuestion();
+}
+
+restartButton.addEventListener("click", restartGame);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
